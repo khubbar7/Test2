@@ -16,14 +16,14 @@ They can be found in:
 /pickett_shared/teaching/EPP622_Fall2022/raw_data/solenopsis_invicta_test2
 
 ## Fastqc and Trimming
-### Create a new directory in the ‘analysis_test2’ directory for the purposes of this test:
+Create a new directory in the ‘analysis_test2’ directory for the purposes of this test:
 
 ``` 
 cd /pickett_shared/teaching/EPP622_Fall2022/analysis_test2/
 mkdir khubbar7 
 ```
 
-### Moving to new directory
+Moving to new directory
 
 ``` 
 cd khubbar7 
@@ -31,13 +31,13 @@ cd khubbar7
 
 Lets keep it *neat* 🥰
 
-### Creating and moving to a directory for Fastqc
+Creating and moving to a directory for Fastqc
 
 ``` 
 mkdir 1_fastqc
 cd 1_fastqc
 ```
-### Mirroring the files from host folders for FastQC
+Mirroring the files from host folders for FastQC
 
 ```
 ln -s ../../../raw_data/solenopsis_invicta_test2/SRR6922141_1.fastq
@@ -46,7 +46,7 @@ ln -s ../../../raw_data/solenopsis_invicta_test2/SRR6922187_1.fastq
 ln -s ../../../raw_data/solenopsis_invicta_test2/SRR6922236_1.fastq
 ```
 
-### Setting up a loop so we only have to do this once :smile:
+Setting up a loop so we only have to do this once :smile:
 
 ```
 nano fastqc.sh
@@ -69,7 +69,7 @@ do
 done
 ```
 
-### Lets run 🥳 
+Lets gooooooo! 🥳 
 
 ``` 
 bash fastqc.sh
@@ -99,7 +99,7 @@ open [filename.html]
 ![image](https://user-images.githubusercontent.com/115577500/195476365-db45c7d1-32a5-4c37-8dd1-3d595010a7a4.png)
 
 
-## Now lets trim the files and re-run everything
+### Now lets trim the files and re-run everything
 
 Going back a directory and making a new one to keep everything tidy
 
@@ -149,6 +149,9 @@ open [filename.html]
 
 ![image](https://user-images.githubusercontent.com/115577500/195476246-e3eda3fe-d21a-4639-abcd-4aac0f47e9f0.png)
 
+
+### Heres the reads per sample!
+
 *Reads per sample (before trimming):
 SRR6922141: 1148398
 SRR6922185: 1315096
@@ -159,6 +162,33 @@ SRR6922141: 1068311
 SRR6922185: 1254903
 SRR6922187: 993372
 SRR6922236: 928913
+
+##Lets run a Burrows-Wheeler Alignment!! 🥳
+
+Setting up the folder to keep things tidy and a subfolder for our files and move all the way into the second folder
+
+```
+cd ../
+mkdir bwatest
+cd bwatest
+mkdir bwafiles
+cd bwafiles
+
+```
+Lets re-mirror all those files in a pipe
+
+```
+ln -s ../../../../raw_data/solenopsis_invicta_test2/SRR6922141_1.fastq | ln -s ../../../../raw_data/solenopsis_invicta_test2/SRR6922185_1.fastq | ln -s ../../../../raw_data/solenopsis_invicta_test2/SRR6922187_1.fastq | ln -s ../../../../raw_data/solenopsis_invicta_test2/SRR6922236_1.fastq
+```
+Now lets pull our reference genoma in
+
+```
+ln -s ../../../../raw_data/solenopsis_invicta/genome/UNIL_Sinv_3.0.fasta* .
+```
+
+I can see this file has already been indexed but if i wanted to index it I would use the `bwa index [filename.fasta]` command
+
+
 
 
 
