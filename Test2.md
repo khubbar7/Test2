@@ -149,7 +149,18 @@ open [filename.html]
 
 ![image](https://user-images.githubusercontent.com/115577500/195476246-e3eda3fe-d21a-4639-abcd-4aac0f47e9f0.png)
 
-*Number of reads before trimming:
+*Reads per sample (before trimming):
+SRR6922141: 1148398
+SRR6922185: 1315096
+SRR6922187: 1081747
+SRR6922236: 977855
+Reads per sample (after trimming):
+SRR6922141: 1068311
+SRR6922185: 1254903
+SRR6922187: 993372
+SRR6922236: 928913
+
+
 
 
 
