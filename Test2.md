@@ -96,7 +96,8 @@ open [filename.html]
 
 ![image](https://user-images.githubusercontent.com/115577500/195474617-1314beb3-39b1-4c5d-9ec6-94058d1a8069.png)
 
-![image](https://user-images.githubusercontent.com/115577500/195474666-152d8c8b-3ec8-4d32-b974-d55de2a79d0d.png)
+![image](https://user-images.githubusercontent.com/115577500/195476365-db45c7d1-32a5-4c37-8dd1-3d595010a7a4.png)
+
 
 ## Now lets trim the files and re-run everything
 
@@ -113,3 +114,42 @@ Lets mirror all of those files again, but this time lets pipe it so we dont have
 ```
 ln -s ../../../raw_data/solenopsis_invicta_test2/SRR6922141_1.fastq | ln -s ../../../raw_data/solenopsis_invicta_test2/SRR6922185_1.fastq | ln -s ../../../raw_data/solenopsis_invicta_test2/SRR6922187_1.fastq | ln -s ../../../raw_data/solenopsis_invicta_test2/SRR6922236_1.fastq
 ```
+The loop was bugging on me but thats okay because I can pipe it :smile:
+
+```
+/sphinx_local/software/skewer/skewer -t 2 -l 95 -x AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTCGTATGCCGTCTTCTGCTTG -Q 30 SRR6922141_1.fastq -o SRR6922141_1 | /sphinx_local/software/skewer/skewer -t 2 -l 95 -x AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTCGTATGCCGTCTTCTGCTTG -Q 30 SRR6922236_1.fastq -o SRR6922236_1 | /sphinx_local/software/skewer/skewer -t 2 -l 95 -x AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTCGTATGCCGTCTTCTGCTTG -Q 30 SRR6922185_1.fastq -o SRR6922185_1 | /sphinx_local/software/skewer/skewer -t 2 -l 95 -x AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTCGTATGCCGTCTTCTGCTTG -Q 30 SRR6922187_1.fastq -o SRR6922187_1
+```
+
+Now lets Fastqc the trimmed files, after loading fastqc again because it doesnt wanna stay loaded:
+
+```
+spack load fastqc
+fastqc SRR6922141_1-trimmed.fastq | fastqc SRR6922236_1-trimmed.fastq | fastqc SRR6922185_1-trimmed.fastq | fastqc SRR6922187_1-trimmed.fastq
+```
+
+And exporting the files to your console on a different terminal not logged into spinx:
+
+```
+scp khubbar7@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/khubbar7/skewer/SRR6922141_1-trimmed_fastqc.html ./
+scp khubbar7@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/khubbar7/skewer/SRR6922185_1-trimmed_fastqc.html ./
+scp khubbar7@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/khubbar7/skewer/SRR6922187_1-trimmed_fastqc.html ./
+scp khubbar7@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/khubbar7/skewer/SRR6922236_1-trimmed_fastqc.html ./
+```
+
+Now use the open command to open them on your console:
+
+```
+open [filename.html]
+```
+![image](https://user-images.githubusercontent.com/115577500/195476110-fe78a43a-39c3-4ba7-8811-11e63921573c.png)
+
+![image](https://user-images.githubusercontent.com/115577500/195476138-5628c62d-229d-441c-9a30-d30b92f578b5.png)
+
+![image](https://user-images.githubusercontent.com/115577500/195476168-ec565887-2d3a-4351-8ba9-82e19969696c.png)
+
+![image](https://user-images.githubusercontent.com/115577500/195476246-e3eda3fe-d21a-4639-abcd-4aac0f47e9f0.png)
+
+*Number of reads before trimming:
+
+
+
