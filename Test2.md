@@ -153,19 +153,31 @@ open [filename.html]
 ### Heres the reads per sample!
 
 *Reads per sample (before trimming):
+
 SRR6922141: 1148398
+
 SRR6922185: 1315096
+
 SRR6922187: 1081747
+
 SRR6922236: 977855
+
 Reads per sample (after trimming):
+
 SRR6922141: 1068311
+
 SRR6922185: 1254903
+
 SRR6922187: 993372
+
 SRR6922236: 928913
 
-##Lets run a Burrows-Wheeler Alignment!! 🥳
+
+## Lets run a Burrows-Wheeler Alignment!! 🥳
 
 Setting up the folder to keep things tidy and a subfolder for our files and move all the way into the second folder
+
+(Note, I originally named this folder bwa and then quickly realized that naming folders the same as commands was really dumb so I ` rm -r ` 'ed it and re-created it)
 
 ```
 cd ../
@@ -175,18 +187,108 @@ mkdir bwafiles
 cd bwafiles
 
 ```
-Lets re-mirror all those files in a pipe
 
-```
-ln -s ../../../../raw_data/solenopsis_invicta_test2/SRR6922141_1.fastq | ln -s ../../../../raw_data/solenopsis_invicta_test2/SRR6922185_1.fastq | ln -s ../../../../raw_data/solenopsis_invicta_test2/SRR6922187_1.fastq | ln -s ../../../../raw_data/solenopsis_invicta_test2/SRR6922236_1.fastq
-```
-Now lets pull our reference genoma in
+Now lets pull our reference genome in
 
 ```
 ln -s ../../../../raw_data/solenopsis_invicta/genome/UNIL_Sinv_3.0.fasta* .
 ```
 
 I can see this file has already been indexed but if i wanted to index it I would use the `bwa index [filename.fasta]` command
+
+Now back one directory to mirror in our trimmed files 
+
+```
+cd ../
+```
+
+Lets re-mirror all those files in a pipe
+
+```
+ln -s ../../../raw_data/solenopsis_invicta_test2/SRR6922141_1.fastq | ln -s ../../../raw_data/solenopsis_invicta_test2/SRR6922185_1.fastq | ln -s ../../../raw_data/solenopsis_invicta_test2/SRR6922187_1.fastq | ln -s ../../../raw_data/solenopsis_invicta_test2/SRR6922236_1.fastq
+```
+
+Lets try looping BWA to make our lives easy
+
+Open nano
+
+```
+nano bwa.sh
+```
+In the nano editor:
+
+```
+for file in *.fastq
+do
+    basename=$(echo "$file" | sed 's/.fastq//')
+    echo $file
+    echo $basename
+
+    spack load bwa
+    spack load samtools@1.9%gcc@8.4.1
+
+    bwa mem -t 6 \
+    bwafiles/UNIL_Sinv_3.0.fasta \
+    ${basename}.fastq \
+    | samtools view -bSh \
+    | samtools sort \
+    -@ 3 -m 4G \
+    -o ${basename}_sorted.bam
+
+
+done
+```
+Lets goooo! 🥳 
+
+Also, grab something to drink- shes going to take a second!
+
+```
+bash bwa.sh
+```
+💃 💃 💃 It ran sucessfully 💃 💃 💃
+
+Lets reload sam tools (version 1.9% GC, 8.4.1) extract those stats in a seperate file:
+
+```
+spack load samtools@1.9%gcc@8.4.1
+samtools flagstat SRR6922141_1_sorted.bam > SRR6922141_1_sorted.stats | samtools flagstat SRR6922185_1_sorted.bam > SRR6922185_1_sorted.stats | samtools flagstat SRR6922187_1_sorted.bam > SRR6922187_1_sorted.stats | samtools flagstat SRR6922236_1_sorted.bam > SRR6922236_1_sorted.stats
+```
+
+Lets 👀 look to see what weve got!
+
+```
+cat SRR6922141_1_sorted.stats
+```
+
+^^ Do this seperately for all four so its easier to see
+
+
+
+### Number of Read Mapped
+
+SRR6922141_1: 1151758
+
+SRR6922185_1: 1317060
+
+SRR6922187_1: 1084886
+
+SRR6922236_1: 979403
+
+### Number of Supp Reads
+
+SRR6922141_1: 3360
+
+SRR6922185_1: 1964
+
+SRR6922187_1: 3139
+
+SRR6922236_1: 1548
+
+
+
+
+
+
 
 
 
