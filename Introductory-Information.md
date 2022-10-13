@@ -69,7 +69,7 @@ do
 done
 ```
 
-Lets run 🥳 
+### Lets run 🥳 
 
 ``` 
 bash fastqc.sh
@@ -84,5 +84,32 @@ scp khubbar7@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis
 scp khubbar7@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/khubbar7/1_fastqc/SRR6922187_1_fastqc.html ./
 scp khubbar7@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/khubbar7/1_fastqc/SRR6922236_1_fastqc.html ./
 ```
+Open the files on your console with the command or just find them
 
+```
+open [filename.html]
+```
 
+![image](https://user-images.githubusercontent.com/115577500/195474502-f0f38a04-c7b0-40b6-95fd-6c6ce46a7868.png)
+
+![image](https://user-images.githubusercontent.com/115577500/195474587-fce7612f-9987-4e1c-a59a-bebecc1146f6.png)
+
+![image](https://user-images.githubusercontent.com/115577500/195474617-1314beb3-39b1-4c5d-9ec6-94058d1a8069.png)
+
+![image](https://user-images.githubusercontent.com/115577500/195474666-152d8c8b-3ec8-4d32-b974-d55de2a79d0d.png)
+
+## Now lets trim the files and re-run everything
+
+Going back a directory and making a new one to keep everything tidy
+
+```
+cd ../
+mkdir skewer
+cd skewer
+```
+
+Lets mirror all of those files again, but this time lets pipe it so we dont have to use four command lines
+
+```
+ln -s ../../../raw_data/solenopsis_invicta_test2/SRR6922141_1.fastq | ln -s ../../../raw_data/solenopsis_invicta_test2/SRR6922185_1.fastq | ln -s ../../../raw_data/solenopsis_invicta_test2/SRR6922187_1.fastq | ln -s ../../../raw_data/solenopsis_invicta_test2/SRR6922236_1.fastq
+```
