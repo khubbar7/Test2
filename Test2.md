@@ -284,7 +284,119 @@ SRR6922187_1: 3139
 
 SRR6922236_1: 1548
 
+## GATK Analysis
 
+Loading java version 8.4.1 and samtools version 1.9
+
+```
+spack load openjdk@11.0.8_10%gcc@8.4.1
+spack load samtools@1.9
+```
+
+Writing sh file for adding reading groups loop
+
+```
+nano gatkloop.sh
+
+```
+In your nano editor:
+
+```
+for f in *_sorted.bam
+do
+        BASE=$( basename $f | sed 's/_sorted.bam*//g' )
+        echo "BASE $BASE"
+        
+	java -jar /pickett_shared/software/picard-2.27.4/picard.jar \
+		AddOrReplaceReadGroups \
+		I=${BASE}_sorted.bam \
+		O=${BASE}_sorted.RG.bam \
+		RGSM=$BASE \
+		RGLB=$BASE \
+		RGPL=illumina \
+		RGPU=$BASE
+	samtools index ${BASE}_sorted.RG.bam
+done
+```
+
+Lets run! 🏃
+
+```
+bash gatkloop.sh
+```
+
+And double check the files got bigger!
+
+Now lets index!
+
+```
+samtools index SRR6922141_1_sorted.RG.bam | samtools index SRR6922185_1_sorted.RG.bam |
+ samtools index SRR6922187_1_sorted.RG.bam | samtools index SRR6922236_1_sorted.RG.bam 
+```
+
+and lets remove the old bam files that dont have the regroups
+
+```
+rm -r SRR6922141_1_sorted.bam SRR6922185_1_sorted.bam SRR6922187_1_sorted.bam SRR6922236_1_sorted.bam
+```
+
+making a new gatktest directory and moving to it
+
+```
+mkdir gatktest
+cd gatktest
+```
+
+Linking in the BAM file with read groups, its index, and the reference genome
+
+```
+ ln -s ../SRR6922141_1_sorted.RG.bam . | ln -s ../SRR6922185_1_sorted.RG.bam . | ln -s ../SRR6922187_1_sorted.RG.bam . | ln -s ../SRR6922236_1_sorted.RG.bam . | ln -s ../SRR6922141_1_sorted.RG.bam.bai . | ln -s ../SRR6922185_1_sorted.RG.bam.bai . | ln -s ../SRR6922187_1_sorted.RG.bam.bai . | ln -s ../SRR6922236_1_sorted.RG.bam.bai . | ln -s /pickett_shared/teaching/EPP622_Fall2022/raw_data/solenopsis_invicta/genome/UNIL_Sinv_3.0.fasta
+ 
+ ```
+ 
+ Preparing reference for GATK
+ 
+ ```
+ /pickett_shared/software/gatk-4.2.6.1/gatk CreateSequenceDictionary -R UNIL_Sinv_3.0.fasta
+ samtools faidx UNIL_Sinv_3.0.fasta
+ ```
+ Lets create a sh file loop for GATK
+ 
+ ```
+ nano gatktestloop.sh
+ ```
+ in nano editor:
+ 
+ ```
+ for f in *_sorted.RG.bam
+do
+        BASE=$( basename $f | sed 's/-trimmed_sorted.RG.bam*//g' )
+        echo "BASE $BASE"
+
+        /pickett_shared/software/gatk-4.2.6.1/gatk HaplotypeCaller \
+        -R UNIL_Sinv_3.0.fasta \
+        -I $f \
+        -O ${BASE}.g.vcf \
+        -ERC GVCF \
+        -bamout ${BASE}_sorted.RG.realigned.bam
+
+done
+```
+Lets goooo!
+```
+bash gatktestloop.sh
+```
+She ran! 😍
+
+Whew! That took 7 mins to run!
+
+Lets make a new directory and then copy our GVCF files in there!
+
+```
+mkdir gatkgvcf
+cp *.g.vcf /pickett_shared/teaching/EPP622_Fall2022/analysis_test2/khubbar7/bwatest/gatktest/gatkgvcf
+```
+Yay! Everything has been moved! Now lets look at the data!
 
 
 
