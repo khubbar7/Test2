@@ -16,6 +16,8 @@ They can be found in:
 /pickett_shared/teaching/EPP622_Fall2022/raw_data/solenopsis_invicta_test2
 
 ## Fastqc and Trimming
+
+Fastqc is a quick way to run some quality control checks on your raw sequence data. It looks at anything from per base/tile sequence quality, per seq GC content, overrepresented sequences, and adapter content. 
 Create a new directory in the ‘analysis_test2’ directory for the purposes of this test:
 
 ``` 
@@ -101,6 +103,8 @@ open [filename.html]
 
 ### Now lets trim the files and re-run everything
 
+Sometimes the adapter regions/ the barcode regions contaminate the sequence. Also the sequence throws more errors at the end. Trimming helps reduce these errors, but may not be worth it. You need to look at your FASTqc data before and after trimming. 
+
 Going back a directory and making a new one to keep everything tidy
 
 ```
@@ -174,6 +178,8 @@ SRR6922236: 928913
 
 
 ## Lets run a Burrows-Wheeler Alignment!! 🥳
+
+A BWA is a fast and accurate way to take short reads and align them against a large reference genome. This is going to map all the reads and give us a BAM file in return which is a tab delinated file that contains sequence alignment data. 
 
 Setting up the folder to keep things tidy and a subfolder for our files and move all the way into the second folder
 
@@ -285,6 +291,8 @@ SRR6922187_1: 3139
 SRR6922236_1: 1548
 
 ## GATK Analysis
+
+GATK stands for Genome Analysis Toolkit and is great for identifying SNPs and insertions/deletions (indels). It will produce a report that will let us see SNPs and Indels. 
 
 Loading java version 8.4.1 and samtools version 1.9
 
