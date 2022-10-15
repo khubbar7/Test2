@@ -406,6 +406,94 @@ cp *.g.vcf /pickett_shared/teaching/EPP622_Fall2022/analysis_test2/khubbar7/bwat
 ```
 Yay! Everything has been moved! Now lets look at the data!
 
+```
+spack load bcftools
+bcftools stats SRR6922141_1_sorted.RG.bam.g.vcf > SRR6922141_1_sorted.RG.bam.g.vcf.stats.txt
+nano SRR6922141_1_sorted.RG.bam.g.vcf.stats.txt
+bcftools stats SRR6922185_1_sorted.RG.bam.g.vcf > SRR6922185_1_sorted.RG.bam.g.vcf.stats.txt
+nano SRR6922185_1_sorted.RG.bam.g.vcf.stats.txt
+bcftools stats SRR6922187_1_sorted.RG.bam.g.vcf > SRR6922187_1_sorted.RG.bam.g.vcf.stats.txt
+nano SRR6922187_1_sorted.RG.bam.g.vcf.stats.txt
+bcftools stats SRR6922236_1_sorted.RG.bam.g.vcf > SRR6922236_1_sorted.RG.bam.g.vcf.stats.txt
+nano SRR6922236_1_sorted.RG.bam.g.vcf.stats.txt
+```
+That gives us:
+
+SRR6922141_1:
+
+SNPS: 28834
+
+INDELS: 4253
+
+SRR6922185_1:
+
+SNPS: 21044
+
+INDELS: 3513
+
+SRR6922187_1:
+
+SNPS: 27421
+
+INDELS: 3884
+
+SRR6922236_1:
+
+SNPS: 19240
+
+INDELS: 3299
+
+
+## IGV visualization
+
+We do this to visualize the SNPs and let us double check the data. Its also fun to play with! 😄
+Looking at IGV:
+
+Lets go ahead a pull these to our computer and set up IGV.org
+
+On a terminal running on my computer:
+
+(This is going to pull more than what I need but its faster)
+
+
+```
+scp khubbar7@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/khubbar7/bwatest/gatktest/*bam .
+scp khubbar7@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/khubbar7/bwatest/gatktest/*bai .
+scp khubbar7@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/khubbar7/bwatest/gatktest/gatkgvcf/*g.vcf .
+scp khubbar7@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/khubbar7/bwatest/gatktest/UNIL_Sinv_3.0.fasta.fai .4
+```
+
+Lets find something to pull up on IGV:
+
+```
+cd ../
+spack load nano
+nano SRR6922141_1_sorted.RG.bam.g.vcf
+```
+(The old google says you can use ^V to jump up pages in nano)
+
+Line from file:
+
+NC_052664.1     1087705 .       AATTAC  A,<NON_REF>     73.60   .       BaseQRankSum=-0.431;DP=3;ExcessHet=0.0000;MLEAC=1,0;MLEAF=0.500,0.00;MQRankSum=0>
+
+PHOTO BELOW
+
+However, this tells us (genome) (position) (deletion anchored by an A) (reference call) 
+
+It does match with the IGV document. You can see the deletion in the top bar.
+
+![image](https://user-images.githubusercontent.com/115577500/195960015-3c588237-0b3e-419c-b118-e4e2e72883b4.png)
+
+
+# And shes done! Thank you!
+
+
+
+
+
+
+
+
 
 
 
